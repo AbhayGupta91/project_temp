@@ -1,27 +1,85 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />   
-
-<div class="container">
-
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="temp.css">
+    <script src="/temp.js"></script>
+</head>
+<body>
+    <div class="container">
         <div class="title">
             <h1>Temperature Converter</h1>
             <span class="Temperature-icon"><i class="fa-solid fa-temperature-three-quarters"></i></span>
         </div>
 
         <div id="celsius">
-            <input type="number" name="" placeholder="Celsius">
-            <span class="icon">&#8451</span>
+            <input type="number" name="" placeholder="Celsius" oninput="convertTemperature('celsius')">
+            <span class="icon">&#8451;</span>
         </div>
         <div id="fahrenheit">
-            <input type="number" name="" placeholder="Fahrenheit">
-            <span class="icon">&#8457</span>
+            <input type="number" name="" placeholder="Fahrenheit" oninput="convertTemperature('fahrenheit')">
+            <span class="icon">&#8457;</span>
         </div>
         <div id="kelvin">
-            <input type="number" name="" placeholder="Kelvin">
-            <span class="icon">&#8490</span>
+            <input type="number" name="" placeholder="Kelvin" oninput="convertTemperature('kelvin')">
+            <span class="icon">&#8490;</span>
         </div>
 
         <div class="button">
-            <button>All Clear</button>
+            <button onclick="clearFields()">All Clear</button>
         </div>
 
+        <!-- Add the "Made By: Abhay Gupta" footer here -->
+        <div style="text-align: center; margin-top: 30px; color: #555;">
+            Made By: Abhay Gupta
+        </div>
     </div>
+
+    <script>
+        function convertTemperature(fromUnit) {
+            const celsiusInput = document.getElementById('celsius').querySelector('input');
+            const fahrenheitInput = document.getElementById('fahrenheit').querySelector('input');
+            const kelvinInput = document.getElementById('kelvin').querySelector('input');
+
+            const temperature = parseFloat(celsiusInput.value);
+
+            if (isNaN(temperature)) {
+                fahrenheitInput.value = '';
+                kelvinInput.value = '';
+                return;
+            }
+
+            switch (fromUnit) {
+                case 'celsius':
+                    fahrenheitInput.value = (temperature * 9/5) + 32;
+                    kelvinInput.value = temperature + 273.15;
+                    break;
+                case 'fahrenheit':
+                    const fTemp = parseFloat(fahrenheitInput.value);
+                    if (!isNaN(fTemp)) {
+                        celsiusInput.value = (fTemp - 32) * 5/9;
+                        kelvinInput.value = (fTemp - 32) * 5/9 + 273.15;
+                    } else {
+                        celsiusInput.value = '';
+                        kelvinInput.value = '';
+                    }
+                    break;
+                case 'kelvin':
+                    const kTemp = parseFloat(kelvinInput.value);
+                    if (!isNaN(kTemp)) {
+                        celsiusInput.value = kTemp - 273.15;
+                        fahrenheitInput.value = (kTemp - 273.15) * 9/5 + 32;
+                    } else {
+                        celsiusInput.value = '';
+                        fahrenheitInput.value = '';
+                    }
+                    break;
+            }
+        }
+
+        function clearFields() {
+            const inputs = document.querySelectorAll('.container input[type="number"]');
+            inputs.forEach(input => input.value = '');
+        }
+    </script>
+</body>
+</html>
